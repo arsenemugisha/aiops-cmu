@@ -61,7 +61,20 @@ kubectl port-forward deployment/frontend 8080:8080
 ```
 
 ### Result
-<!-- paste kubectl get deploy output here -->
+<!-- kubectl get deploy output -->
+NAME                    READY   UP-TO-DATE   AVAILABLE   AGE
+adservice               1/1     1            1           39m
+cartservice             1/1     1            1           39m
+checkoutservice         1/1     1            1           39m
+currencyservice         1/1     1            1           39m
+emailservice            1/1     1            1           39m
+frontend                1/1     1            1           39m
+loadgenerator           1/1     1            1           39m
+paymentservice          1/1     1            1           39m
+productcatalogservice   1/1     1            1           39m
+recommendationservice   1/1     1            1           39m
+redis-cart              1/1     1            1           39m
+shippingservice         1/1     1            1           39m
 
 ### Screenshot
 `screenshots/Week1Task2a.png` — deployments
