@@ -29,7 +29,15 @@ kubectl get nodes
 ```
 
 ### Result
-<!-- paste kubectl get deploy -n istio-system output here -->
+<!-- kubectl get deploy -n istio-system output here -->
+NAME                   READY   UP-TO-DATE   AVAILABLE   AGE
+grafana                1/1     1            1           7m41s
+istio-egressgateway    1/1     1            1           11m
+istio-ingressgateway   1/1     1            1           11m
+istiod                 1/1     1            1           12m
+jaeger                 1/1     1            1           7m41s
+kiali                  1/1     1            1           7m41s
+prometheus             1/1     1            1           7m40s
 
 ### Screenshot
 `screenshots/Week1Task1.png`
