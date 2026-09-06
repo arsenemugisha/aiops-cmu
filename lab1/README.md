@@ -99,7 +99,62 @@ kubectl describe deploy/frontend
 ```
 
 ### Result
-<!-- paste kubectl describe deploy/frontend output here -->
+<!-- kubectl describe deploy/frontend output -->
+Name:                   frontend
+Namespace:              default
+CreationTimestamp:      Sun, 06 Sep 2026 23:23:58 +0200
+Labels:                 app=frontend
+Annotations:            deployment.kubernetes.io/revision: 4
+Selector:               app=frontend
+Replicas:               1 desired | 1 updated | 1 total | 1 available | 0 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  25% max unavailable, 25% max surge
+Pod Template:
+  Labels:           app=frontend
+  Annotations:      kubectl.kubernetes.io/restartedAt: 2026-09-07T00:00:32+02:00
+                    sidecar.istio.io/rewriteAppHTTPProbers: true
+  Service Account:  frontend
+  Containers:
+   server:
+    Image:      frontend:latest
+    Port:       8080/TCP
+    Host Port:  0/TCP
+    Limits:
+      cpu:     200m
+      memory:  128Mi
+    Requests:
+      cpu:      100m
+      memory:   64Mi
+    Liveness:   http-get http://:8080/_healthz delay=10s timeout=1s period=10s #success=1 #failure=3
+    Readiness:  http-get http://:8080/_healthz delay=10s timeout=1s period=10s #success=1 #failure=3
+    Environment:
+      PORT:                             8080
+      PRODUCT_CATALOG_SERVICE_ADDR:     productcatalogservice:3550
+      CURRENCY_SERVICE_ADDR:            currencyservice:7000
+      CART_SERVICE_ADDR:                cartservice:7070
+      RECOMMENDATION_SERVICE_ADDR:      recommendationservice:8080
+      SHIPPING_SERVICE_ADDR:            shippingservice:50051
+      CHECKOUT_SERVICE_ADDR:            checkoutservice:5050
+      AD_SERVICE_ADDR:                  adservice:9555
+      SHOPPING_ASSISTANT_SERVICE_ADDR:  shoppingassistantservice:80
+      ENABLE_PROFILER:                  0
+    Mounts:                             <none>
+  Volumes:                              <none>
+  Node-Selectors:                       <none>
+  Tolerations:                          <none>
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Available      True    MinimumReplicasAvailable
+  Progressing    True    NewReplicaSetAvailable
+OldReplicaSets:  frontend-754b6d944f (0/0 replicas created), frontend-66b5b57f65 (0/0 replicas created), frontend-78548db95 (0/0 replicas created)
+NewReplicaSet:   frontend-867696c4d (1/1 replicas created)
+Events:
+  Type    Reason             Age   From                   Message
+  ----    ------             ----  ----                   -------
+  Normal  ScalingReplicaSet  59s   deployment-controller  Scaled up replica set frontend-867696c4d from 0 to 1
+  Normal  ScalingReplicaSet  41s   deployment-controller  Scaled down replica set frontend-78548db95 from 1 to 0
 
 ### Screenshot
 `screenshots/Week1Task3.png`
