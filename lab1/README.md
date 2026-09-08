@@ -29,8 +29,7 @@ kubectl get nodes
 ```
 
 ### Result
-<!-- kubectl get deploy -n istio-system result -->
-'''
+```
 NAME                   READY   UP-TO-DATE   AVAILABLE   AGE
 grafana                1/1     1            1           7m41s
 istio-egressgateway    1/1     1            1           11m
@@ -39,7 +38,8 @@ istiod                 1/1     1            1           12m
 jaeger                 1/1     1            1           7m41s
 kiali                  1/1     1            1           7m41s
 prometheus             1/1     1            1           7m40s
-'''
+### Result
+```
 ### Screenshot
 `screenshots/Week1Task1.png`
 
@@ -62,8 +62,7 @@ kubectl port-forward deployment/frontend 8080:8080
 ```
 
 ### Result
-<!-- kubectl get deploy result -->
-'''
+```
 NAME                    READY   UP-TO-DATE   AVAILABLE   AGE
 adservice               1/1     1            1           39m
 cartservice             1/1     1            1           39m
@@ -77,7 +76,7 @@ productcatalogservice   1/1     1            1           39m
 recommendationservice   1/1     1            1           39m
 redis-cart              1/1     1            1           39m
 shippingservice         1/1     1            1           39m
-'''
+```
 ### Screenshot
 `screenshots/Week1Task2a.png` - deployments
 `screenshots/Week1Task2b.png` - Boutique homepage
@@ -101,8 +100,7 @@ kubectl describe deploy/frontend
 ```
 
 ### Result
-<!-- kubectl describe deploy/frontend result -->
-'''
+```
 Name:                   frontend
 Namespace:              default
 CreationTimestamp:      Sun, 06 Sep 2026 23:23:58 +0200
@@ -158,7 +156,7 @@ Events:
   ----    ------             ----  ----                   -------
   Normal  ScalingReplicaSet  59s   deployment-controller  Scaled up replica set frontend-867696c4d from 0 to 1
   Normal  ScalingReplicaSet  41s   deployment-controller  Scaled down replica set frontend-78548db95 from 1 to 0
-'''
+```
 ### Screenshot
 `screenshots/Week1Task3.png`
 
