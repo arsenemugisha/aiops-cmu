@@ -170,3 +170,84 @@ Events:
 ## Issues Encountered
 - The Istio sidecar injection did not got applied because the typo that i had in namespace label "istio-injection=enable" instead of "istio-injection=enabled" 
 - I had to overwrite with ""kubectl label --overwrite with kubectl rollout restart deployment
+
+
+
+---
+
+## Week 2 Task 1 — Monitor Boutique with Kiali
+
+### What I did
+- Opened Kiali dashboard using istioctl dashboard kiali
+- Navigated to Workloads → shippingservice → Traffic tab
+- Set Reported from to Source
+- Observed healthy state showing both frontend and checkoutservice traffic
+
+### Result
+- frontend: 0.59rps, 100% success
+- checkoutservice: 0.24rps, 100% success
+
+### Screenshot
+`screenshots/Week2Task1.png`
+
+---
+
+## Week 2 Task 2 — Fault Injection 500ms delay (Checkoutservice only)
+
+### What I did
+- Created shipping-delay.yaml VirtualService targeting checkoutservice → shippingservice
+- Applied 500ms fixed delay at 100% for checkoutservice traffic only
+- Frontend traffic to shippingservice was not affected
+
+### Commands used
+```bash
+kubectl apply -f ~/aiops-cmu/lab1/configs/shipping-delay.yaml
+```
+
+### Result
+- checkoutservice request duration spiked to ~500-600ms
+- frontend request duration remained low and unaffected
+
+### Screenshot
+`screenshots/Week2Task2.png`
+
+---
+
+## Week 2 Task 3 — Fault Injection on one pod only (Checkoutservice scaled to 2)
+
+### What I did
+- Scaled checkoutservice to 2 pods
+- Added label delay=true to one pod using kubectl edit pod
+- Created new VirtualService matching only the labeled pod with 1sec delay
+- Observed ~500ms average in Kiali — one pod delayed, one not
+
+### Commands used
+```bash
+kubectl scale deploy checkoutservice --replicas=2
+kubectl edit pod <podID>
+kubectl apply -f ~/aiops-cmu/lab1/configs/checkout-delay-pod.yaml
+```
+
+### Result
+- Kiali showed flat 500ms average for checkoutservice over several minutes
+- Confirms one pod at 1sec delay + one pod at 0ms = ~500ms average
+
+### Screenshot
+`screenshots/Week2Task3.png`
+
+---
+
+## Key Learnings
+- Kubernetes orchestrates microservices by maintaining desired state where crashed pods are restarted automatically
+- Istio sidecar injection must be enabled on the namespace BEFORE pods are deployed
+- 2/2 in kubectl get pods means the app container plus the Istio envoy sidecar proxy
+- Rolling updates allow zero-downtime deployments in Kubernetes
+- VirtualService is the Istio object that controls traffic routing and fault injection
+- Fault injection can target specific traffic sources using sourceLabels without changing application code
+- Pod labels can be used to target individual pods within the same deployment for selective fault injection
+- Prometheus, Grafana, Kiali, Loki and Jaeger form a complete observability stack
+
+## Issues Encountered
+- Istio sidecar injection failed initially due to a typo in the namespace label on istio-insjection=enable instead of istio-injection=enabled. Fixed with kubectl label --overwrite and kubectl rollout restart deployment
+- Pods showed 1/1 instead of 2/2 because the label typo prevented Istio from injecting the envoy sidecar
+- PATH variable lost between WSL2 sessions — fixed permanently by adding istio bin to ~/.bashrc
